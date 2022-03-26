@@ -1,0 +1,293 @@
+@font-face {
+    font-family: TwitterChirp;
+    src: url(/assets/fonts/chirp-regular.woff);
+}
+
+@font-face {
+    font-weight: bold;
+    font-family: TwitterChirp;
+    src: url(/assets/fonts/chirp-bold.woff);
+}
+
+html {
+    --transition: 0.2s;
+    --background: #202124;
+    --foreground: #BDC1C6;
+    --disabled: #6E767D;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background);
+}
+
+* {
+    font-size: 15px;
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--foreground);
+
+    box-sizing: border-box;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0;
+    margin: 0;
+
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    scrollbar-width: none;
+    user-select: none;
+    overflow: hidden;
+    outline: none;
+    border: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/**/
+
+
+
+body > .info {
+    display: block;
+    padding: 1rem;
+    padding-top: 0;
+    user-select: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+
+
+/**/
+
+
+
+#content {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    position: relative;
+    display: flex;
+}
+
+#content > .col {
+    width: 100%;
+    flex-shrink: 1;
+    height: fit-content;
+    flex-direction: column;
+    display: flex;
+}
+
+#content > .col > img {
+    width: 100%;
+}
+
+#content.shuffle {
+    overflow-y: hidden;
+}
+
+#content.shuffle > .col {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
+
+
+/**/
+
+
+
+@keyframes push {
+    from {
+        transform: translate(var(--l), var(--t)) scale(1);
+    }
+}
+
+@keyframes pop {
+	to {
+        transform: translate(var(--l), var(--t)) scale(1);
+	}
+}
+
+body > img {
+    width: var(--w);
+    height: var(--h);
+    animation: push var(--transition);
+    transform: translate(var(--x), var(--y)) scale(var(--s));
+    background-color: var(--background);
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    top: 0;
+}
+
+body > img.pop {
+    animation: pop var(--transition);
+}
+
+#content, #controls {
+    transition: opacity var(--transition) linear;
+    opacity: 1;
+}
+
+body > img:not(.pop) ~ * {
+    pointer-events: none;
+    opacity: 0 !important;
+}
+
+
+
+/**/
+
+
+
+#controls {
+    --size: 2rem;
+    --margin: 0.5rem;
+    --padding: 0.5rem;
+    position: absolute;
+    margin: 1rem;
+    z-index: 2;
+    bottom: 0;
+    right: 0;
+
+    border-radius: 1rem;
+    transition-property: background-color, opacity;
+}
+
+#controls, #controls .toggle {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition-duration: var(--transition);
+}
+
+#controls .toggle {
+    height: 0;
+    transition-property: height;
+}
+
+#controls.open {
+    background-color: var(--background);
+}
+
+#controls.open .toggle {
+    height: calc(4 * (var(--size) + var(--margin)));
+}
+
+#controls .icon {
+    width: var(--size);
+    height: var(--size);
+    background-color: var(--foreground);
+}
+
+#controls .heart {
+    box-sizing: content-box;
+    padding: var(--padding);
+}
+
+#controls .toggle .icon {
+    margin-top: var(--margin);
+}
+
+
+
+/**/
+
+
+
+@keyframes conic {
+    0% {
+        background-position: 0% 0%;
+    }
+    25% {
+        background-position: 100% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    75% {
+        background-position: 0% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+#controls .heart {
+    background-color: #F91880;
+    background: conic-gradient(
+        hsl(0, 100%, 50%),
+        hsl(60, 100%, 50%),
+        hsl(120, 100%, 50%),
+        hsl(180, 100%, 50%),
+        hsl(240, 100%, 50%),
+        hsl(300, 100%, 50%),
+        hsl(360, 100%, 50%)
+    );
+    background-size: 200% 200%;
+    animation: conic 30s linear infinite;
+    transition-property: transform, filter;
+    transition-duration: var(--transition);
+}
+
+#controls.open .heart {
+    transform: scaleY(-1) rotate(360deg);
+    filter: invert(1);
+}
+
+#controls .heart { --mask-image: url(/assets/icons/heart.svg); }
+
+#controls .scroll {
+    transition-property: transform;
+    transition-duration: var(--transition);
+}
+
+#content + #controls .scroll {
+    transform: rotate(90deg) scale(0.8, 0.8);
+    --mask-image: url(/assets/icons/sort.svg);
+}
+
+#content.shuffle + #controls .scroll {
+    transform: rotate(-90deg) scale(-0.8, 0.8);
+    --mask-image: url(/assets/icons/shuffle.svg);
+}
+
+#controls .minus { --mask-image: url(/assets/icons/minus.svg); }
+#controls .plus { --mask-image: url(/assets/icons/plus.svg); }
+
+#controls :is(.minus, .plus):active {
+    transform: scale(0.9);
+}
+
+#controls :is(.minus, .plus):disabled {
+    background-color: var(--disabled);
+}
+
+#controls .info {
+    transform: scale(0.8);
+    --mask-image: url(/assets/icons/info.svg);
+}
+
+.icon {
+    --mask-position: center;
+    --mask-repeat: no-repeat;
+    --mask-size: var(--size) var(--size);
+
+    mask-size: var(--mask-size);
+    mask-image: var(--mask-image);
+    mask-repeat: var(--mask-repeat);
+    mask-position: var(--mask-position);
+    -webkit-mask-size: var(--mask-size);
+    -webkit-mask-image: var(--mask-image);
+    -webkit-mask-repeat: var(--mask-repeat);
+    -webkit-mask-position: var(--mask-position);
+}
