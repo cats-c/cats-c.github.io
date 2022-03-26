@@ -1,6 +1,6 @@
 const file = './assets/cats';
 const error = './assets/error.jpg';
-const [pad, margin] = [1000, 100];
+const [pad, margin] = [1000, 1000];
 const [min, max] = [1, 5];
 const initial = 2;
 
