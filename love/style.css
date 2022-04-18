@@ -1,0 +1,75 @@
+@font-face {
+    font-family: TwitterChirp;
+    src: url(/assets/fonts/chirp-regular.woff);
+}
+
+@font-face {
+    font-weight: bold;
+    font-family: TwitterChirp;
+    src: url(/assets/fonts/chirp-bold.woff);
+}
+
+html {
+    --background: #101010;
+    --foreground: #B3B3B3;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    background-color: var(--background);
+}
+
+* {
+    font-size: 15px;
+    font-family: TwitterChirp, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--foreground);
+
+    box-sizing: border-box;
+    flex-shrink: 0;
+    flex-grow: 0;
+    padding: 0;
+    margin: 0;
+
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    scrollbar-width: none;
+    user-select: none;
+    overflow: hidden;
+    outline: none;
+    border: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+
+
+/**/
+
+
+
+body > .love {
+    max-height: 100%;
+    overflow-y: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+body > .love :is(span, img) {
+    max-width: 500px;
+}
+
+body > .love span {
+    padding: 1rem;
+    padding-top: 0;
+    user-select: text;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+body > .love img {
+    width: 100%;
+}
